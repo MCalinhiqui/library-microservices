@@ -1,0 +1,21 @@
+server:
+  port: 8081
+  wait-time-in-ms-when-sync-empty: 3000
+
+spring:
+  spring:
+    profiles:
+      active: native
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/book-service
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+application-version: 1.0

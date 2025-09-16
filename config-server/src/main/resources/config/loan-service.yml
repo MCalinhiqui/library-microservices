@@ -1,0 +1,25 @@
+server:
+  port: 8083
+  wait-time-in-ms-when-sync-empty: 3000
+
+spring:
+  spring:
+    profiles:
+      active: native
+
+  datasource:
+    uri: jdbc:postgresql://localhost:5432/loan-service
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    ddl-auto: create
+
+feign-client:
+  book-service:
+    path: http://localhost:8081/bookservice
+  user-service:
+    path: http://localhost:8082/userservice
+
+application-version: 1.0
