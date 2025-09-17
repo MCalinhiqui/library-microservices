@@ -9,7 +9,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 import java.util.List;
 
-@Mapper(uses = IYearToIntegerMapper.class)
+@Mapper(componentModel = "spring", uses = IYearToIntegerMapper.class)
 public interface IBookMapper{
     BookDTO toDTO(Book book);
     Book toDomain(BookDTO bookDTO);
