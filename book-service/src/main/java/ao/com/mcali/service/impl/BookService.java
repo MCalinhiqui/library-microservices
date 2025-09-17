@@ -2,7 +2,7 @@ package ao.com.mcali.service.impl;
 
 import ao.com.mcali.domain.Book;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookDTOForUpdating;
+import ao.com.mcali.dto.BookUpdatedDTO;
 import ao.com.mcali.exception.LivroNaoEncontradoException;
 import ao.com.mcali.exception.CodigoInvalidoException;
 import ao.com.mcali.exception.TransicaoDeStatusInvalidoException;
@@ -48,7 +48,7 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public BookDTO atualizar(BookDTOForUpdating dtoForUpdating, Long codigo) {
+    public BookDTO atualizar(BookUpdatedDTO dtoForUpdating, Long codigo) {
         validarCodigo(codigo);
         Book book = repository.findByCodigo(codigo).orElseThrow(LivroNaoEncontradoException::new);
         mapper.domainFromBookUpdatedDTO(dtoForUpdating,book);

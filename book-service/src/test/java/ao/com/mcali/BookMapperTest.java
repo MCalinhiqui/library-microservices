@@ -2,7 +2,7 @@ package ao.com.mcali;
 
 import ao.com.mcali.domain.Book;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookDTOForUpdating;
+import ao.com.mcali.dto.BookUpdatedDTO;
 import ao.com.mcali.mapper.IBookMapper;
 import net.datafaker.Faker;
 import org.junit.jupiter.api.Assertions;
@@ -62,7 +62,7 @@ class BookMapperTest {
         Integer ano = book.getAnoDePublicacao().getValue();
         String autor = book.getAutor();
 
-        BookDTOForUpdating dtoForUpdating = new BookDTOForUpdating("atualizado",null,null);
+        BookUpdatedDTO dtoForUpdating = new BookUpdatedDTO("atualizado",null,null);
         bookMapper.domainFromBookUpdatedDTO(dtoForUpdating,book);
 
         Assertions.assertEquals(dtoForUpdating.titulo(),book.getTitulo());

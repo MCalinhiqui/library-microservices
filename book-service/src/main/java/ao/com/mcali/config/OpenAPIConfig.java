@@ -23,8 +23,8 @@ public class OpenAPIConfig {
                         .title("Book service API")
                         .description("API para gestão dos livros na biblioteca")
                         .version(versao)
-                        .license(new License().name("Apache 2.0").url("http://springdoc.org"))
-                        .contact(new Contact().name("Moisés Calinhiqui").email("moisesccalinhiqui@gmail.com")));
+                        .contact(new Contact().name("Moisés Calinhiqui").email("moisesccalinhiqui@gmail.com"))
+                        .license(new License().name("Apache 2.0").url("http://springdoc.org")));
 
     }
 }

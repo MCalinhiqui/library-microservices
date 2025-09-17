@@ -2,7 +2,7 @@ package ao.com.mcali.service;
 
 import ao.com.mcali.domain.Book;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookDTOForUpdating;
+import ao.com.mcali.dto.BookUpdatedDTO;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public interface IBookService {
     List<BookDTO> buscarTodos();
     BookDTO buscarPorCodigo(Long codigo);
     List<BookDTO> buscarPorEstado(Book.Status status);
-    BookDTO atualizar(BookDTOForUpdating dtoForUpdating, Long codigo);
+    BookDTO atualizar(BookUpdatedDTO dtoForUpdating, Long codigo);
     void atualizarStatus(Book.Status status, Long codigo);
     void deletar(Long codigo);
 }

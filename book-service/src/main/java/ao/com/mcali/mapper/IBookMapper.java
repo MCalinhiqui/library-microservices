@@ -1,7 +1,7 @@
 package ao.com.mcali.mapper;
 import ao.com.mcali.domain.Book;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookDTOForUpdating;
+import ao.com.mcali.dto.BookUpdatedDTO;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -15,7 +15,7 @@ public interface IBookMapper{
     Book toDomain(BookDTO bookDTO);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void domainFromBookUpdatedDTO(BookDTOForUpdating dto, @MappingTarget Book book);
+    void domainFromBookUpdatedDTO(BookUpdatedDTO dto, @MappingTarget Book book);
 
     List<BookDTO> toDTOList(List<Book> list);
     List<Book> toDomainList(List<BookDTO> list);

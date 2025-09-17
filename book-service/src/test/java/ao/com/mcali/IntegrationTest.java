@@ -2,7 +2,7 @@ package ao.com.mcali;
 
 import ao.com.mcali.domain.Book;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookDTOForUpdating;
+import ao.com.mcali.dto.BookUpdatedDTO;
 import ao.com.mcali.exception.CodigoInvalidoException;
 import ao.com.mcali.exception.LivroNaoEncontradoException;
 import ao.com.mcali.service.IBookService;
@@ -87,7 +87,7 @@ public class IntegrationTest {
 
     @Test
     void atualizarLivro(){
-        BookDTOForUpdating dtoForUpdating = new BookDTOForUpdating(
+        BookUpdatedDTO dtoForUpdating = new BookUpdatedDTO(
                  "Atualizado"
                 ,"AutorAtualizado"
                 ,2025);

@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
 @Schema(name = "Atualização de Livro", description = "Campos usados para atualização parcial dos dados de um livro")
-public record BookDTOForUpdating(
+public record BookUpdatedDTO(
     @JsonProperty
     @Size(min = 5, max = 100)
     @Schema(description = "Título do livro", minLength = 5, maxLength = 100, example = "Romeu e Julieta", nullable = true)

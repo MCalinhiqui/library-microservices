@@ -2,7 +2,7 @@ package ao.com.mcali.controller;
 
 import ao.com.mcali.domain.Book;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookDTOForUpdating;
+import ao.com.mcali.dto.BookUpdatedDTO;
 import ao.com.mcali.service.IBookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -65,7 +65,7 @@ public class BookController{
             @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidoS", content = @Content(schema = @Schema())),
             @ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(schema = @Schema()))})
     @PatchMapping("/{codigo}")
-    ResponseEntity<BookDTO> atualizar(@RequestBody @Valid BookDTOForUpdating book, @PathVariable Long codigo) {
+    ResponseEntity<BookDTO> atualizar(@RequestBody @Valid BookUpdatedDTO book, @PathVariable Long codigo) {
         BookDTO bookDTO = service.atualizar(book,codigo);
         return ResponseEntity.ok(bookDTO);
     }
