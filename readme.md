@@ -38,7 +38,7 @@ library-microservices/
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/library-microservices.git
+   git clone https://github.com/MCalinhiqui/library-microservices.git
    cd library-microservices
    ```
 
