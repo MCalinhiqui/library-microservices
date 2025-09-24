@@ -1,18 +1,17 @@
 package ao.com.mcali.controller;
 
-import ao.com.mcali.domain.Book;
+import ao.com.mcali.domain.BookStatus;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookUpdatedDTO;
+import ao.com.mcali.dto.BookDetailsDTO;
+import ao.com.mcali.dto.BookUpdateDTO;
 import ao.com.mcali.service.IBookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,8 +42,8 @@ public class BookController{
     @Operation(summary = "Listar todos os livros",
             description = "Retorna a lista de todos os livros cadastrados, podendo ser filtrada por status via query param")
     @ApiResponse(responseCode = "200", description = "Lista restornada com sucesso", content = @Content(schema = @Schema()))
-    ResponseEntity<List<BookDTO>> buscarTodos(@RequestParam(required = false) Book.Status status){
-        List<BookDTO> list;
+    ResponseEntity<List<BookDetailsDTO>> buscarTodos(@RequestParam(required = false) BookStatus status){
+        List<BookDetailsDTO> list;
         list = (status == null) ? service.buscarTodos() : service.buscarPorEstado(status);
         return ResponseEntity.ok(list);
     }
@@ -55,8 +54,8 @@ public class BookController{
     @ApiResponse(responseCode = "200", description = "Livro Encontrado", content = @Content(schema = @Schema(implementation = BookDTO.class)))
     @ApiResponse(responseCode = "400", description = "Código inválido fornecido", content = @Content(schema = @Schema()))
     @ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(schema = @Schema()))
-    ResponseEntity<BookDTO> buscarPorCodigo(@PathVariable Long codigo) {
-        BookDTO book = service.buscarPorCodigo(codigo);
+    ResponseEntity<BookDetailsDTO> buscarPorCodigo(@PathVariable Long codigo) {
+        BookDetailsDTO book = service.buscarPorCodigo(codigo);
         return ResponseEntity.ok(book);
     }
 
@@ -66,7 +65,7 @@ public class BookController{
     @ApiResponse(responseCode = "200", description = "Livro atualizado com sucesso", content = @Content(schema = @Schema(implementation = BookDTO.class)))
     @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidoS", content = @Content(schema = @Schema()))
     @ApiResponse(responseCode = "404", description = "Livro não encontrado", content = @Content(schema = @Schema()))
-    ResponseEntity<BookDTO> atualizar(@RequestBody @Valid BookUpdatedDTO book, @PathVariable Long codigo) {
+    ResponseEntity<BookDTO> atualizar(@RequestBody @Valid BookUpdateDTO book, @PathVariable Long codigo) {
         BookDTO bookDTO = service.atualizar(book,codigo);
         return ResponseEntity.ok(bookDTO);
     }
@@ -86,7 +85,7 @@ public class BookController{
     @ApiResponse(responseCode = "400", description = "Código inválido fornecido")
     @ApiResponse(responseCode = "404", description = "Livro não encontrado")
     @ApiResponse(responseCode = "401", description = "Violação das regras de transição")
-    ResponseEntity<Void> atualizar(@PathVariable("status") Book.Status status, @PathVariable("codigo") Long codigo) {
+    ResponseEntity<Void> atualizar(@PathVariable("status") BookStatus status, @PathVariable("codigo") Long codigo) {
         service.atualizarStatus(status,codigo);
         return ResponseEntity.ok().build();
     }

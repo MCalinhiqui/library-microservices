@@ -1,8 +1,10 @@
 package ao.com.mcali;
 
 import ao.com.mcali.domain.Book;
+import ao.com.mcali.domain.BookStatus;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookUpdatedDTO;
+import ao.com.mcali.dto.BookDetailsDTO;
+import ao.com.mcali.dto.BookUpdateDTO;
 import ao.com.mcali.exception.CodigoInvalidoException;
 import ao.com.mcali.mapper.IBookMapper;
 import ao.com.mcali.repository.IBookRepository;
@@ -36,7 +38,21 @@ public class BookServiceTest {
     IBookService service = new BookService(mapper, repository);
 
     Faker faker = new Faker();
-    List<BookDTO> criarBookDTO(int qtd){
+    List<BookDetailsDTO> criarBookDTO(int qtd){
+        List<BookDetailsDTO> books = new ArrayList<>();
+        for (int i = 0; i < qtd; i++) {
+            BookDetailsDTO book = BookDetailsDTO.builder()
+                    .codigo(faker.number().numberBetween(1000L, 9999L))
+                    .titulo("teste")
+                    .autor("testeAutor")
+                    .anoDePublicacao(2026)
+                    .build();
+            books.add(book);
+        }
+        return books;
+    }
+
+    List<BookDTO> criarDTO(int qtd){
         List<BookDTO> books = new ArrayList<>();
         for (int i = 0; i < qtd; i++) {
             BookDTO book = BookDTO.builder()
@@ -58,7 +74,7 @@ public class BookServiceTest {
                     .titulo("teste")
                     .autor("testeAutor")
                     .anoDePublicacao(Year.of(2026))
-                    .status(Book.Status.INDISPONIVEL)
+                    .status(BookStatus.INDISPONIVEL)
                     .build();
             books.add(book);
         }
@@ -67,7 +83,7 @@ public class BookServiceTest {
 
     @Test
     void cadastrar(){
-        BookDTO bookDTO = criarBookDTO(1).get(0);
+        BookDTO bookDTO = criarDTO(1).get(0);
         Book book = mapper.toDomain(bookDTO);
 
         when(mapper.toDomain(bookDTO)).thenReturn(book);
@@ -79,12 +95,12 @@ public class BookServiceTest {
 
     @Test
     void buscarTodos(){
-        List<BookDTO> dtoList = criarBookDTO(5);
+        List<BookDetailsDTO> dtoList = criarBookDTO(5);
         List<Book> list = mapper.toDomainList(dtoList);
 
         when(repository.findAll()).thenReturn(list);
         when(mapper.toDTOList(list)).thenReturn(dtoList);
-        List<BookDTO> booksCadastrados = service.buscarTodos();
+        List<BookDetailsDTO> booksCadastrados = service.buscarTodos();
 
         verify(repository,times(1)).findAll();
         Assertions.assertFalse(booksCadastrados.isEmpty());
@@ -93,7 +109,7 @@ public class BookServiceTest {
 
     @Test
     void buscarPorCodigo(){
-        BookDTO bookDTO = criarBookDTO(1).get(0);
+        BookDTO bookDTO = criarDTO(1).get(0);
         Book book = Book.builder()
                 .titulo(bookDTO.titulo())
                 .codigo(bookDTO.codigo())
@@ -103,7 +119,7 @@ public class BookServiceTest {
 
         when(repository.findByCodigo(bookDTO.codigo())).thenReturn(Optional.of(book));
         when(mapper.toDTO(book)).thenReturn(bookDTO);
-        BookDTO bookCadastrado = service.buscarPorCodigo(bookDTO.codigo());
+        BookDetailsDTO bookCadastrado = service.buscarPorCodigo(bookDTO.codigo());
 
         verify(repository,times(1)).findByCodigo(bookDTO.codigo());
         Assertions.assertNotNull(bookCadastrado);
@@ -117,14 +133,14 @@ public class BookServiceTest {
 
     @Test
     void consultarPorEstado(){
-        List<BookDTO> dtoList = criarBookDTO(5);
+        List<BookDetailsDTO> dtoList = criarBookDTO(5);
         List<Book> list = mapper.toDomainList(dtoList);
 
-        when(repository.findByStatus(Book.Status.INDISPONIVEL)).thenReturn(list);
+        when(repository.findByStatus(BookStatus.INDISPONIVEL)).thenReturn(list);
         when(mapper.toDTOList(list)).thenReturn(dtoList);
-        List<BookDTO> books = service.buscarPorEstado(Book.Status.INDISPONIVEL);
+        List<BookDetailsDTO> books = service.buscarPorEstado(BookStatus.INDISPONIVEL);
 
-        verify(repository,times(1)).findByStatus(Book.Status.INDISPONIVEL);
+        verify(repository,times(1)).findByStatus(BookStatus.INDISPONIVEL);
 
         Assertions.assertFalse(books.isEmpty());
         System.out.println(books);
@@ -132,7 +148,7 @@ public class BookServiceTest {
 
     @Test
     void atualizarLivro(){
-        BookUpdatedDTO dtoForUpdating = new BookUpdatedDTO(
+        BookUpdateDTO dtoForUpdating = new BookUpdateDTO(
                 "Atualizado"
                 ,"AutorAtualizado"
                 ,2025);
@@ -143,7 +159,7 @@ public class BookServiceTest {
                 .titulo("sdfsf")
                 .autor("sdfsdf")
                 .anoDePublicacao(Year.of(2002))
-                .status(Book.Status.DISPONIVEL)
+                .status(BookStatus.DISPONIVEL)
                 .build();
 
         Book bookUpdated = Book.builder()
@@ -152,7 +168,7 @@ public class BookServiceTest {
                 .titulo(dtoForUpdating.titulo())
                 .autor(dtoForUpdating.autor())
                 .anoDePublicacao(Year.of(dtoForUpdating.anoDePublicacao()))
-                .status(Book.Status.DISPONIVEL)
+                .status(BookStatus.DISPONIVEL)
                 .build();
 
         BookDTO bookDTO = BookDTO.builder()
@@ -182,7 +198,7 @@ public class BookServiceTest {
 
     @Test
     void atualizarStatus(){
-        Book.Status status =  Book.Status.INDISPONIVEL;
+        BookStatus status =  BookStatus.INDISPONIVEL;
         Long codigo = 1234L;
 
         Book book = Book.builder()
@@ -191,7 +207,7 @@ public class BookServiceTest {
                 .titulo("sdfsf")
                 .autor("sdfsdf")
                 .anoDePublicacao(Year.of(2002))
-                .status(Book.Status.DISPONIVEL)
+                .status(BookStatus.DISPONIVEL)
                 .build();
 
         when(repository.findByCodigo(codigo)).thenReturn(Optional.of(book));
@@ -210,7 +226,7 @@ public class BookServiceTest {
                 .codigo(1234L)
                 .autor(faker.name().maleFirstName()+" "+faker.name().lastName())
                 .anoDePublicacao(Year.of(2020))
-                .status(Book.Status.INDISPONIVEL)
+                .status(BookStatus.INDISPONIVEL)
                 .build();
 
         when(repository.findByCodigo(book.getCodigo())).thenReturn(Optional.of(book));

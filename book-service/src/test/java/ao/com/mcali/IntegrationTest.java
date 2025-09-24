@@ -1,8 +1,9 @@
 package ao.com.mcali;
 
-import ao.com.mcali.domain.Book;
+import ao.com.mcali.domain.BookStatus;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookUpdatedDTO;
+import ao.com.mcali.dto.BookDetailsDTO;
+import ao.com.mcali.dto.BookUpdateDTO;
 import ao.com.mcali.exception.CodigoInvalidoException;
 import ao.com.mcali.exception.LivroNaoEncontradoException;
 import ao.com.mcali.service.IBookService;
@@ -47,7 +48,7 @@ public class IntegrationTest {
         List<BookDTO> dtoList = criarBookDTO(5);
         dtoList.forEach(b -> service.cadastrar(b));
 
-        List<BookDTO> booksCadastrados = service.buscarTodos();
+        List<BookDetailsDTO> booksCadastrados = service.buscarTodos();
 
         Assertions.assertFalse(booksCadastrados.isEmpty());
         System.out.println(booksCadastrados);
@@ -58,7 +59,7 @@ public class IntegrationTest {
         BookDTO bookDTO = criarBookDTO(1).get(0);
         service.cadastrar(bookDTO);
 
-        BookDTO bookCadastrado = service.buscarPorCodigo(bookDTO.codigo());
+        BookDetailsDTO bookCadastrado = service.buscarPorCodigo(bookDTO.codigo());
 
         Assertions.assertNotNull(bookCadastrado);
         Assertions.assertEquals(bookDTO.titulo(), bookCadastrado.titulo());
@@ -79,7 +80,7 @@ public class IntegrationTest {
         List<BookDTO> dtoList = criarBookDTO(5);
         dtoList.forEach(b -> service.cadastrar(b));
 
-        List<BookDTO> books = service.buscarPorEstado(Book.Status.INDISPONIVEL);
+        List<BookDetailsDTO> books = service.buscarPorEstado(BookStatus.INDISPONIVEL);
 
         Assertions.assertFalse(books.isEmpty());
         System.out.println(books);
@@ -87,7 +88,7 @@ public class IntegrationTest {
 
     @Test
     void atualizarLivro(){
-        BookUpdatedDTO dtoForUpdating = new BookUpdatedDTO(
+        BookUpdateDTO dtoForUpdating = new BookUpdateDTO(
                  "Atualizado"
                 ,"AutorAtualizado"
                 ,2025);
@@ -106,7 +107,7 @@ public class IntegrationTest {
     void atualizarEstadoDoLivro(){
         BookDTO bookDTO = criarBookDTO(1).get(0);
         service.cadastrar(bookDTO);
-        service.atualizarStatus(Book.Status.DISPONIVEL, bookDTO.codigo());
+        service.atualizarStatus(BookStatus.DISPONIVEL, bookDTO.codigo());
     }
 
     @Test

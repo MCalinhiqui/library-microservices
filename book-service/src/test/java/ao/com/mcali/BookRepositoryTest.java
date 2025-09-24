@@ -1,6 +1,7 @@
 package ao.com.mcali;
 
 import ao.com.mcali.domain.Book;
+import ao.com.mcali.domain.BookStatus;
 import ao.com.mcali.repository.IBookRepository;
 
 import net.datafaker.Faker;
@@ -60,10 +61,10 @@ public class BookRepositoryTest {
         List<Book> livros = criarBook(10);
         bookRepository.saveAll(livros::iterator);
 
-        List<Book> livrosCadastrados = bookRepository.findByStatus(Book.Status.EMPRESTADO);
+        List<Book> livrosCadastrados = bookRepository.findByStatus(BookStatus.EMPRESTADO);
         Assertions.assertTrue(livrosCadastrados.isEmpty());
 
-        livrosCadastrados = bookRepository.findByStatus(Book.Status.INDISPONIVEL);
+        livrosCadastrados = bookRepository.findByStatus(BookStatus.INDISPONIVEL);
         Assertions.assertEquals(livrosCadastrados.size(), livros.size());
         for (Book b : livrosCadastrados) {
             System.out.println(b.getCodigo()+" "+b.getStatus());

@@ -7,6 +7,9 @@ spring:
     profiles:
       active: native
 
+  jackson:
+    time-zone: UTC
+
   datasource:
     uri: jdbc:postgresql://localhost:5432/loan-service
     username: admin

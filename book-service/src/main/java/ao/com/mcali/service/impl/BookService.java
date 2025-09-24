@@ -1,8 +1,10 @@
 package ao.com.mcali.service.impl;
 
 import ao.com.mcali.domain.Book;
+import ao.com.mcali.domain.BookStatus;
 import ao.com.mcali.dto.BookDTO;
-import ao.com.mcali.dto.BookUpdatedDTO;
+import ao.com.mcali.dto.BookDetailsDTO;
+import ao.com.mcali.dto.BookUpdateDTO;
 import ao.com.mcali.exception.LivroNaoEncontradoException;
 import ao.com.mcali.exception.CodigoInvalidoException;
 import ao.com.mcali.exception.TransicaoDeStatusInvalidoException;
@@ -29,26 +31,26 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public List<BookDTO> buscarTodos() {
+    public List<BookDetailsDTO> buscarTodos() {
         List<Book> list = repository.findAll();
         return mapper.toDTOList(list);
     }
 
     @Override
-    public BookDTO buscarPorCodigo(Long codigo) {
+    public BookDetailsDTO buscarPorCodigo(Long codigo) {
         validarCodigo(codigo);
         Book book = repository.findByCodigo(codigo).orElseThrow(LivroNaoEncontradoException::new);
-        return mapper.toDTO(book);
+        return mapper.toDetailsDTO(book);
     }
 
     @Override
-    public List<BookDTO> buscarPorEstado(Book.Status status) {
+    public List<BookDetailsDTO> buscarPorEstado(BookStatus status) {
         List<Book> listBook = repository.findByStatus(status);
         return mapper.toDTOList(listBook);
     }
 
     @Override
-    public BookDTO atualizar(BookUpdatedDTO dtoForUpdating, Long codigo) {
+    public BookDTO atualizar(BookUpdateDTO dtoForUpdating, Long codigo) {
         validarCodigo(codigo);
         Book book = repository.findByCodigo(codigo).orElseThrow(LivroNaoEncontradoException::new);
         mapper.domainFromBookUpdatedDTO(dtoForUpdating,book);
@@ -57,7 +59,7 @@ public class BookService implements IBookService{
     }
 
     @Override
-    public void atualizarStatus(Book.Status status, Long codigo) {
+    public void atualizarStatus(BookStatus status, Long codigo) {
         validarCodigo(codigo);
         Book book = repository.findByCodigo(codigo).orElseThrow(() -> new LivroNaoEncontradoException("Não existe nenhum livro registrado com este codigo"));
         validarStatus(book.getStatus(),status);
@@ -69,15 +71,15 @@ public class BookService implements IBookService{
     public void deletar(Long codigo) {
         validarCodigo(codigo);
         Book book = repository.findByCodigo(codigo).orElseThrow(() -> new LivroNaoEncontradoException("Não existe nenhum livro registrado com este codigo"));
-        if(!(book.getStatus().equals(Book.Status.INDISPONIVEL)))
+        if(!(book.getStatus().equals(BookStatus.INDISPONIVEL)))
             throw new UnsupportedOperationException("Não é possível deletar um livro com status "+book.getStatus()+", altere o estado para indisponível!!");
         repository.delete(book);
     }
 
-    private void validarStatus(Book.Status atual, Book.Status novo){
+    private void validarStatus(BookStatus atual, BookStatus novo){
         boolean isValid = switch (atual){
-            case INDISPONIVEL, EMPRESTADO -> novo == Book.Status.DISPONIVEL;
-            case DISPONIVEL -> novo == Book.Status.EMPRESTADO || novo == Book.Status.INDISPONIVEL;
+            case INDISPONIVEL, EMPRESTADO -> novo == BookStatus.DISPONIVEL;
+            case DISPONIVEL -> novo == BookStatus.EMPRESTADO || novo == BookStatus.INDISPONIVEL;
         };
 
         if(!isValid)

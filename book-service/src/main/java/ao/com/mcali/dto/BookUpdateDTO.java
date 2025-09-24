@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
+/**
+ * The type Book updated dto.
+ */
 @Schema(name = "Atualização de Livro", description = "Campos usados para atualização parcial dos dados de um livro")
-public record BookUpdatedDTO(
+public record BookUpdateDTO(
     @JsonProperty
     @Size(min = 5, max = 100)
     @Schema(description = "Título do livro", minLength = 5, maxLength = 100, example = "Romeu e Julieta", nullable = true)
