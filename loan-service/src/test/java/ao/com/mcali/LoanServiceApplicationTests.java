@@ -1,4 +1,4 @@
-package ao.com.mcali.loan_service;
+package ao.com.mcali;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -18,8 +18,8 @@ spring:
 
 feign-client:
   book-service:
-    path: http://localhost:8081/bookservice
+    path: http://localhost:8081/books
   user-service:
-    path: http://localhost:8082/userservice
+    path: http://localhost:8082/users
 
 application-version: 1.0
