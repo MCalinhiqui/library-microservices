@@ -34,7 +34,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     protected ResponseEntity<String> hanlderDataIntegrityViolationException(DataIntegrityViolationException ex){
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Já existe um livro cadastrado com este codigo");
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Já existe um livro cadastrado com este codigo");
     }
 
     @ExceptionHandler(LivroNaoEncontradoException.class)
