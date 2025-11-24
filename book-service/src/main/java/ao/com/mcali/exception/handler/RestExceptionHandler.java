@@ -1,5 +1,8 @@
-package ao.com.mcali.exception;
+package ao.com.mcali.exception.handler;
 
+import ao.com.mcali.exception.CodigoInvalidoException;
+import ao.com.mcali.exception.LivroNaoEncontradoException;
+import ao.com.mcali.exception.TransicaoDeStatusInvalidoException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
